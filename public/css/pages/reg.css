@@ -1,0 +1,21 @@
+form{
+    width:300px;
+    margin:0 auto;
+}
+
+div#form{
+    display:table;
+}
+
+div#form > div {
+    display:table-row;
+}
+
+div#form > div > div {
+    display:table-cell;
+    padding:5px;
+}
+
+p.error{
+    color:red;
+}

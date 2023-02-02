@@ -1,0 +1,32 @@
+header,footer{
+    background-color:#e2e8f0;
+    width:100%;
+    text-align:center;
+    padding-top:20px;
+    position:relative;
+}
+
+header{
+    height:80px;
+}
+
+header > div#hello {
+    position:absolute;
+    right:20px;
+    top:2px;
+    text-align:right;
+}
+
+footer{
+    height:30px;
+}
+
+main{
+    width:60%;
+    margin:0 auto;
+    min-height:300px;
+}
+
+footer{
+    height:50px;
+}
