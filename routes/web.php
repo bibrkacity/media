@@ -13,13 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/',  function () {
+    return view('home');
+})->middleware('auth')->name('home');
 
-Route::group(['namespace' => '\App\Http\Controllers\Citations', 'middleware'=>'auth'], function () {
+Route::group(['prefix'=>'citations','namespace' => '\App\Http\Controllers\Citations', 'middleware'=>'auth'], function () {
 
-    Route::get('/', 'CitationController@index')->name('home');
-
+    Route::get('create', 'CitationController@create')->name('citations.create');
+    Route::get('/{per_page?}', 'CitationController@index')->name('citations.index');
+    Route::post('/', 'CitationController@store')->name('citations.store');
+    Route::get('{id}/edit', 'CitationController@edit')->name('citations.edit');
+    Route::put('{id}', 'CitationController@update')->name('citations.update');
 });
-
 
 Route::group(['namespace' => '\App\Http\Controllers\Auth'], function () {
 

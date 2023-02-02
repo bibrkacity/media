@@ -9,6 +9,11 @@ class Citation extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'citation',
+    ];
+
     /**
      * Sendings of citation
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -27,5 +32,16 @@ class Citation extends Model
     public function User(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo('App\Models\User');
+    }
+
+
+    /**
+     * Accessor for created_at
+     * @return string
+     */
+    public function GetCreatedAtAttribute(): string
+    {
+        $d = \DateTime::createFromFormat('Y-m-d H:i:s', $this->attributes['created_at']) ;
+        return $d->format( 'r');
     }
 }

@@ -27,7 +27,7 @@
         </div>
 
         <div>
-            <div>Confirm password</div>
+            <div></div>
             <div><input type="submit" value="Login" /></div>
         </div>
     </div>
