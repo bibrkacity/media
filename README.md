@@ -26,7 +26,6 @@
 - Clone repository from [https://github.com/bibrkacity/media.git](https://github.com/bibrkacity/media.git).
 - Save **/.env.example** as **/.env**
 - Run **composer install**
-- Run **composer update**
 - Edit **/.env** - write your parameters of MySQL connection
 - Run migrations **php artisan migrate**
 - Run **php artisan serve**

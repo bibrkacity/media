@@ -7,4 +7,32 @@ th,td{
     padding:3px;
 }
 
+div.share{
+    position:relative;
+    overflow:visible;
+    z-index:2;
+}
+
+div.share_form{
+    position:absolute;
+
+    left:95px;
+    top:0px;
+
+    background-color:white;
+
+    border:1px solid silver;
+    border-radius:5px;
+
+    width:400px;
+    height:400px;
+    display:none;
+
+    z-index:5;
+}
+
+div.share_form.show{
+    display:block;
+}
+
 

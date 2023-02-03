@@ -22,6 +22,7 @@
             <th>Citation</th>
             <th>Created at</th>
             <th>Edit</th>
+            <th>Shared</th>
             <th>Share</th>
         </tr>
 
@@ -31,7 +32,19 @@
                 <td>{{ $citation->citation }}</td>
                 <td>{{ $citation->created_at }}</td>
                 <td><input type="button" value="Edit" onclick="location.href='{{ route('citations.edit',['id'=>$citation->id]) }}'" /></td>
-                <td></td>
+                <td>
+                @if( $citation->Messengers )
+                    {{ count($citation->Messengers) }}
+                @else
+                   Don't yet
+                @endif
+                    </td>
+                <td><div class="share">
+                        <input type="button" value="Поділитися" onclick="this.nextElementSibling.classList.toggle('show')" />
+                        <div class="share_form">
+                        </div>
+                    </div>
+                </td>
             </tr>
     @endforeach
     </table>
