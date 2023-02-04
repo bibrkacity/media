@@ -2,6 +2,10 @@
 
 namespace  App\Services;
 
+use App\Models\Messenger;
+use Exception;
+use Illuminate\Http\Request;
+
 abstract class MessengerBase
 {
     const SENT      = 1;
@@ -9,53 +13,53 @@ abstract class MessengerBase
     const SUCCESS   = 2;
 
     protected int $id;
-    protected int $name;
+    protected string $name;
+    protected string $display_name;
 
-    protected abstract function send_in_socket( string $address, string $message) : int;
+    /**
+     * Sending of citation
+     * @param string $address
+     * @param string $message
+     * @return int
+     */
+    protected abstract function send(string $address, string $message) : int;
+
+    /**
+     * Part of form for send a citation
+     * @param int $citation_id id of citation
+     * @return string
+     */
+    public abstract function form_fields() : string;
+
 
     /**
      * Create object of class messenger (namespace App\Services\Messengers)
-     * @param int|string $messenger Value of field of table messengers: `id` if int, `name` id string
+     * @param string $messengerName Value of field of table messengers: `name`
      * @return object|null
      */
-    public static function createInstance(int|string $messenger) : object|null
+    public static function createInstance(string $messengerName) : object|null
     {
-        $obj = null;
-        if( is_int($marker) ){
-            $obj = self::createInstanceInt($marker);
+        $className = '\App\Services\Messengers\\'.$messengerName;
+        \Log::info($className);
+        if(class_exists($className)){
+            return new $className();
         }
-        elseif( is_string($marker ) ){
-            $obj = self::createInstanceString($marker);
-        }
-
-        return $obj;
-
+        else
+            return null;
     }
 
-    public static function send(string $address, string $message, int|string $messenger) : int
+    public static function submit(Request $request) : void
     {
-        $status = 0;
         try{
 
-            self::send_to_socket($address, $message,$messenger);
-            $status = self::SENT;
+        } catch(Exception $e){
 
-        } catch(\Exception $e){
-            $status = self::SENT;
         }
-
     }
 
-    protected static function send_to_socket(string $address, string $message, int|string $messenger)
+    protected function store()
     {
-    }
 
-    protected static function createInstanceInt(int $marker): object|null
-    {
-    }
-
-    protected static function createInstanceString(string $marker): object|null
-    {
     }
 
 

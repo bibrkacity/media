@@ -5,6 +5,11 @@
     <link rel="stylesheet" href="/css/pages/index.css" />
 @endsection
 
+@section('js')
+    @parent
+    <script type="text/javascript" src="/js/citations.js"></script>
+@endsection
+
 @section('content')
 
 <input type="button" value="Add citate" onclick="location.href='{{ route('citations.create') }}'" />
@@ -42,6 +47,7 @@
                 <td><div class="share">
                         <input type="button" value="Поділитися" onclick="this.nextElementSibling.classList.toggle('show')" />
                         <div class="share_form">
+                            {!! \App\Services\CitationService::send_form($citation->id, $data['messengers']) !!}
                         </div>
                     </div>
                 </td>

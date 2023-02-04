@@ -9,6 +9,9 @@
   @section('css')
     <link rel="stylesheet" href="/css/app.css" />
   @show
+
+  @section('js')
+  @show
 </head>
 <body>
 <header>

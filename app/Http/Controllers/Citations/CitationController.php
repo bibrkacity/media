@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Citation;
 use App\Models\User;
 use App\Services\CitationService;
+use App\Services\MessengerBase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -25,6 +26,7 @@ class CitationController extends Controller
             $paginator = CitationService::index_web($perPage);
             $data['citations'] = $paginator->items();
             $data['links'] = $paginator->links('vendor.pagination.simple-tailwind');
+            $data['messengers'] = CitationService::messengers();
 
         }
         catch(\Exception $e){
@@ -106,6 +108,17 @@ class CitationController extends Controller
             return response()->redirectTo( route('citations.create') )
                 ->withErrors($e->getMessage());
         }
+    }
+
+    public  function send_fields(Request $request): string
+    {
+        $name = $request->name;
+        $messenger = MessengerBase::createInstance($name);
+        $html = '';
+        if($messenger)
+            $html = $messenger->form_fields();
+
+        return $html;
     }
 
 }

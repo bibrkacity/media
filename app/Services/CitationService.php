@@ -3,6 +3,7 @@
 namespace  App\Services;
 
 use App\Models\Citation;
+use App\Models\Messenger;
 
 class CitationService
 {
@@ -11,7 +12,6 @@ class CitationService
         return Citation::orderBy('id','desc')
             ->paginate($per_page);
     }
-
 
     public static function index_api(int $per_page, int $page): array
     {
@@ -39,5 +39,26 @@ class CitationService
         }
 
         return $citations;
+    }
+
+    public static function send_form( $citation_id , $messengers )
+    {
+        $data = ['citation_id'=>$citation_id,
+            'messengers' => $messengers
+        ];
+
+        return view('citations.send', $data)->render();
+
+    }
+
+    public static function messengers() : array
+    {
+        $data = [];
+        $data[] = ['', '-select messenger-'];
+
+        foreach(Messenger::all() as $one ){
+            $data[] = [$one->name, $one->display_name];
+        }
+        return $data;
     }
 }
