@@ -26,7 +26,9 @@ Route::group(['prefix'=>'citations','namespace' => '\App\Http\Controllers\Citati
     Route::put('{id}', 'CitationController@update')->name('citations.update');
 
     Route::group(['prefix'=>'ajax'], function () {
+        Route::post('send', 'CitationController@send')->name('citations.ajax.send');
         Route::get('send/fields', 'CitationController@send_fields')->name('citations.ajax.send_fields');
+
     });
 });
 

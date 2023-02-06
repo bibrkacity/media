@@ -34,7 +34,6 @@ class Citation extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-
     /**
      * Accessor for created_at
      * @return string

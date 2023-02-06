@@ -7,11 +7,13 @@ use App\Models\Citation;
 use App\Models\User;
 use App\Services\CitationService;
 use App\Services\MessengerBase;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\QueryException;
+use Illuminate\Validation\ValidationException;
 
 class CitationController extends Controller
 {
@@ -85,7 +87,6 @@ class CitationController extends Controller
         }
     }
 
-
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         try{
@@ -119,6 +120,54 @@ class CitationController extends Controller
             $html = $messenger->form_fields();
 
         return $html;
+    }
+
+    public  function send(Request $request): \Illuminate\Http\JsonResponse
+    {
+        try{
+
+            $data = [
+                'status'=>MessengerBase::SENT
+            ];
+
+            $http_code = 200;
+
+            $input = $request->all();
+
+            $rules = [
+                'citation_id' => 'required|integer|min:1',
+                'messenger_name' => 'required|string',
+            ];
+            $validator = Validator::make($input , $rules);
+            if( $validator->fails() )
+                throw new ValidationException($validator);
+
+            $messenger = MessengerBase::createInstance($request->messenger_name);
+
+            $rules = $messenger->rules();
+            $validator = Validator::make($input , $rules);
+            if( $validator->fails() )
+                throw new ValidationException($validator);
+
+            $citation = Citation::find($input['citation_id']);
+
+            $address_name = $messenger->address_field_name;
+            $address = $input[$address_name];
+
+            $status = $messenger->send($address, $citation->citation );
+
+            $citation->Messengers()->attach($messenger->id,[
+                    'user_id'=>Auth::id(),
+                    'address'=>$address,
+                    'status'=>$status,
+                ]);
+
+        }catch(Exception|ValidationException $e){
+            $data['error'] = $e->getMessage();
+            $http_code=400;
+        }
+
+        return response()->json($data, $http_code);
     }
 
 }

@@ -3,14 +3,14 @@ namespace  App\Services\Messengers;
 
 use App\Services\MessengerBase;
 
-class email extends MessengerBase
+class viber extends MessengerBase
 {
     public function __construct()
     {
         $this->id = 3;
-        $this->name = 'email';
-        $this->display_name = 'E-mail';
-        $this->address_field_name = 'email';
+        $this->name = 'viber';
+        $this->display_name = 'Viber';
+        $this->address_field_name = 'phone';
     }
 
     public function form_fields():string
@@ -21,7 +21,7 @@ class email extends MessengerBase
     public function rules(): array
     {
         return [
-            $this->address_field_name => 'required|email'
+            $this->address_field_name => 'required|string'
         ];
     }
 

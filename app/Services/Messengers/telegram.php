@@ -3,14 +3,14 @@ namespace  App\Services\Messengers;
 
 use App\Services\MessengerBase;
 
-class email extends MessengerBase
+class telegram extends MessengerBase
 {
     public function __construct()
     {
-        $this->id = 3;
-        $this->name = 'email';
-        $this->display_name = 'E-mail';
-        $this->address_field_name = 'email';
+        $this->id = 4;
+        $this->name = 'telegram';
+        $this->display_name = 'Telegram';
+        $this->address_field_name = 'telegram';
     }
 
     public function form_fields():string
@@ -21,7 +21,7 @@ class email extends MessengerBase
     public function rules(): array
     {
         return [
-            $this->address_field_name => 'required|email'
+            $this->address_field_name => 'required|string'
         ];
     }
 

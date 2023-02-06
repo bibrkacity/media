@@ -7,7 +7,14 @@
 
 @section('js')
     @parent
+    <script type="text/javascript">
+        let url_fields  = '{{ route('citations.ajax.send_fields') }}';
+        let url_send    = '{{ route('citations.ajax.send') }}';
+    </script>
     <script type="text/javascript" src="/js/citations.js"></script>
+
+
+
 @endsection
 
 @section('content')
@@ -46,7 +53,7 @@
                     </td>
                 <td><div class="share">
                         <input type="button" value="Поділитися" onclick="this.nextElementSibling.classList.toggle('show')" />
-                        <div class="share_form">
+                        <div class="share_form" id="share_form{{$citation->id}}">
                             {!! \App\Services\CitationService::send_form($citation->id, $data['messengers']) !!}
                         </div>
                     </div>

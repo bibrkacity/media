@@ -35,4 +35,16 @@ div.share_form.show{
     display:block;
 }
 
+div.fields{
+    display:table;
+}
+div.fields > div {
+    display:table-row;
+}
+
+div.fields > div > div {
+    display:table-cell;
+    padding:5px;
+    vertical-align: top;
+}
 

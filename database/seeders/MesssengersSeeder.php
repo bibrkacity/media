@@ -17,6 +17,7 @@ class MesssengersSeeder extends Seeder
     {
         DB::table('messengers')->insert(
             [
+                'id'=>3,
                 'name' => 'email',
                 'display_name' => 'E-mail',
             ],
@@ -24,6 +25,7 @@ class MesssengersSeeder extends Seeder
 
         DB::table('messengers')->insert(
             [
+                'id'=>4,
                 'name' => 'telegram',
                 'display_name' => 'Telegram',
             ],
@@ -31,6 +33,7 @@ class MesssengersSeeder extends Seeder
 
         DB::table('messengers')->insert(
             [
+                'id'=>5,
                 'name' => 'viber',
                 'display_name' => 'Viber',
             ],
