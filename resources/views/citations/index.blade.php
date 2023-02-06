@@ -10,6 +10,7 @@
     <script type="text/javascript">
         let url_fields  = '{{ route('citations.ajax.send_fields') }}';
         let url_send    = '{{ route('citations.ajax.send') }}';
+        let success = {{ \App\Services\MessengerBase::SUCCESS }};
     </script>
     <script type="text/javascript" src="/js/citations.js"></script>
 
@@ -44,7 +45,7 @@
                 <td>{{ $citation->citation }}</td>
                 <td>{{ $citation->created_at }}</td>
                 <td><input type="button" value="Edit" onclick="location.href='{{ route('citations.edit',['id'=>$citation->id]) }}'" /></td>
-                <td>
+                <td id="q{{ $citation->id }}">
                 @if( $citation->Messengers )
                     {{ count($citation->Messengers) }}
                 @else

@@ -162,6 +162,8 @@ class CitationController extends Controller
                     'status'=>$status,
                 ]);
 
+            $data['status'] = $status;
+
         }catch(Exception|ValidationException $e){
             $data['error'] = $e->getMessage();
             $http_code=400;

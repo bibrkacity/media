@@ -38,12 +38,21 @@ function send(citation_id)
     }
 
 //url_fields declared in view citations.index line ~12
-    let response = fetch(url_send, {
+    fetch(url_send, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(data)
+    }).then(response => response.json())
+    .then((data) => {
+        if(data.status == success){ //success declared in view citations.index line ~13
+            let td = document.getElementById('q'+citation_id );
+            let q = parseInt(td.innerText);
+            q++;
+            td.innerText = q.toString();
+
+        }
     });
 
     send_finish(citation_id);

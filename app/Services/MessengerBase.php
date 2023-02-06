@@ -40,8 +40,8 @@ abstract class MessengerBase
     {
         return <<<QWE
         <div>
-            <div>E-mail</div>
-            <div><input type="email" name="$this->address_field_name" /></div>
+            <div>$this->address_field_name</div>
+            <div><input type="text" name="$this->address_field_name" /></div>
         </div>
 QWE;
     }

@@ -27,7 +27,7 @@ class telegram extends MessengerBase
 
     public function send( string $address, string $message): int
     {
-        sleep(15);
+        sleep(10);
         return MessengerBase::SUCCESS;
     }
 
