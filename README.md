@@ -33,3 +33,7 @@
 - Run **php artisan serve**
 - Go to [http://127.0.0.1:8000](http://127.0.0.1:8000) in your browser
 - Enjoy!
+
+## API
+
+Please read [http://127.0.0.1:8000/api/documentation](http://127.0.0.1:8000/api/documentation)
