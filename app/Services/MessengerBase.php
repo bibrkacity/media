@@ -12,7 +12,6 @@ abstract class MessengerBase
     const FAILED    = 2;
     const SUCCESS   = 3;
 
-
     protected int $id;
     protected string $name;
     protected string $display_name;
