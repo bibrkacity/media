@@ -107,16 +107,17 @@ class CitationController extends ApiController
      *      ),
      *     @OA\Response(
      *         response=200,
-     *         description="The list of citations",
+     *         description="Nothing",
      *     )
      * )
      */
+
     public function update(Request $request): \Illuminate\Http\JsonResponse
     {
         try{
             $http_code = 200;
             $rules = [
-                'citation_id'   => 'required|integer|exists:citations,id',
+                'citation_id'   => 'required|integer|exists:App\Models\Citation,id',
                 'citation'      => 'required|string|max:500',
             ];
             $validator = Validator::make($request->all() , $rules);
@@ -140,6 +141,28 @@ class CitationController extends ApiController
         return response()->json($data,$http_code);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/citations",
+     *     summary="Save new citation",
+     *     description="Save new citation",
+     *     tags={"Citations"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *          name="citation",
+     *          description="Text of citation",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="New citation",
+     *     )
+     * )
+     */
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         try{

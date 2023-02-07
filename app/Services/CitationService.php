@@ -29,11 +29,11 @@ class CitationService
             $citation->created_at = $one->created_at;
 
             $user = new \stdClass();
-            $user->id = $citation->User->id;
-            $user->name = $citation->User->name;
+            $user->id = $one->User->id;
+            $user->name = $one->User->name;
             $citation->User = $user;
 
-            $citation->sent_count = $citation->Messengers ? count($citation->Messengers) : 0;
+            $citation->sent_count = $one->Messengers ? count($one->Messengers) : 0;
 
             $citations[] = $citation;
         }

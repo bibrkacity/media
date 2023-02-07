@@ -168,7 +168,36 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "The list of citations"
+                        "description": "Nothing"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Citations"
+                ],
+                "summary": "Save new citation",
+                "description": "Save new citation",
+                "operationId": "4a1e0669801a85849297531f52c27b21",
+                "parameters": [
+                    {
+                        "name": "citation",
+                        "in": "query",
+                        "description": "Text of citation",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "New citation"
                     }
                 },
                 "security": [
