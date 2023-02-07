@@ -16,13 +16,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'v1','namespace'=>'\App\Http\Controllers\Api\V1'], function ($api) {
 
-    $api->post('register', 'RegisterController@register')->name('api.register.v1');
-    $api->post('login', 'LoginController@login')->name('api.login.v1');
+    $api->post('register', 'Auth\RegisterController@register')->name('api.register.v1');
+    $api->post('login', 'Auth\LoginController@login')->name('api.login.v1');
 
     Route::group(['middleware'=>'auth:sanctum'], function ($api) {
 
         $api->get('user', function (Request $request) {
             return $request->user();
+        });
+
+        Route::group(['prefix'=>'citations'], function ($api) {
+
+            $api->get('/', 'CitationController@index')->name('citations.index');
+            $api->post('/', 'CitationController@store')->name('citations.store');
+            $api->put('/', 'CitationController@update')->name('citations.update');
+
         });
 
     });

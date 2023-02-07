@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Citations;
+namespace App\Http\Controllers\Api\V1\Citations;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\V1\ApiController;
 use App\Models\Citation;
 use App\Services\CitationService;
 use App\Services\MessengerBase;
@@ -13,19 +13,49 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 
-class CitationController extends Controller
+class CitationController extends ApiController
 {
 
-    public function index( string $per_page='25'): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    /**
+     * @OA\Get(
+     *     path="/citations",
+     *     summary="List of citations",
+     *     description="List of citations",
+     *     tags={"Citations"},
+     *     security={{"token": {}}},
+     *     @OA\Parameter(
+     *          name="page",
+     *          description="Page number",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer",
+     *              default=1,
+     *          )
+     *      ),
+     *     @OA\Parameter(
+     *          name="per_page",
+     *          description="Coint of citations in list",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer",
+     *              default=25,
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="The list of citations",
+     *     )
+     * )
+     */
+    public function index()
     {
         try{
-            $perPage = (int)$per_page;
-            $perPage = $perPage ? $perPage :25;
 
             $data=['error' => ''];
-            $paginator = CitationService::index_web($perPage);
+            $paginator = CitationService::index_api($perPage);
             $data['citations'] = $paginator->items();
-            $data['links'] = $paginator->links('vendor.pagination.simple-tailwind');
             $data['messengers'] = CitationService::messengers();
 
         }
@@ -35,11 +65,6 @@ class CitationController extends Controller
         }
 
         return view('citations.index', ['data'=>$data]);
-    }
-
-    public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
-    {
-        return view('citations.create');
     }
 
     public function edit(string $id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
@@ -107,17 +132,6 @@ class CitationController extends Controller
             return response()->redirectTo( route('citations.create') )
                 ->withErrors($e->getMessage());
         }
-    }
-
-    public  function send_fields(Request $request): string
-    {
-        $name = $request->name;
-        $messenger = MessengerBase::createInstance($name);
-        $html = '';
-        if($messenger)
-            $html = $messenger->form_fields();
-
-        return $html;
     }
 
     public  function send(Request $request): \Illuminate\Http\JsonResponse

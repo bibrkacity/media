@@ -17,7 +17,7 @@
                 ],
                 "summary": "Authorization",
                 "description": "Authorization and return API-token",
-                "operationId": "446016b1f25b9da0b1332aed2bf016bc",
+                "operationId": "13b5b42fe243c504cbcb70a25a54bc1e",
                 "parameters": [
                     {
                         "name": "email",
@@ -52,7 +52,7 @@
                 ],
                 "summary": "Registration of new user",
                 "description": "Registration of new user and return API-token",
-                "operationId": "92ff0f48c20de1eb9099b6c5c8d19e22",
+                "operationId": "31416ef0da616084de2ce2b466b9ce27",
                 "parameters": [
                     {
                         "name": "name",
@@ -96,6 +96,48 @@
                         "description": "User and API-token"
                     }
                 }
+            }
+        },
+        "/citations": {
+            "get": {
+                "tags": [
+                    "Citations"
+                ],
+                "summary": "List of citations",
+                "description": "List of citations",
+                "operationId": "0772f9bdd202f3088adec2f7bb773618",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Coint of citations in list",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 25
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The list of citations"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
             }
         }
     },
