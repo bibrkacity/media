@@ -27,9 +27,9 @@ Route::group(['prefix' => 'v1','namespace'=>'\App\Http\Controllers\Api\V1'], fun
 
         Route::group(['prefix'=>'citations'], function ($api) {
 
-            $api->get('/', 'CitationController@index')->name('citations.index');
-            $api->post('/', 'CitationController@store')->name('citations.store');
-            $api->put('/', 'CitationController@update')->name('citations.update');
+            $api->get('/' , 'Citations\CitationController@index')->name('api.citations.index');
+            $api->post('/', 'Citations\CitationController@store')->name('api.citations.store');
+            $api->put('/' , 'Citations\CitationController@update')->name('api.citations.update');
 
         });
 

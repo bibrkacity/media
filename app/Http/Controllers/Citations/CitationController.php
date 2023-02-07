@@ -22,7 +22,7 @@ class CitationController extends Controller
             $perPage = (int)$per_page;
             $perPage = $perPage ? $perPage :25;
 
-            $data=['error' => ''];
+            $data=['errors' => ''];
             $paginator = CitationService::index_web($perPage);
             $data['citations'] = $paginator->items();
             $data['links'] = $paginator->links('vendor.pagination.simple-tailwind');
@@ -31,7 +31,7 @@ class CitationController extends Controller
         }
         catch(\Exception $e){
             \Log::info( $e->getMessage() . "\nfile " . $e->getFile() . "\nline ".$e->getLine() );
-            $data['error'] = 'Unexpected error: '.$e->getMessage();
+            $data['errors'] = 'Unexpected error: '.$e->getMessage();
         }
 
         return view('citations.index', ['data'=>$data]);
@@ -163,7 +163,7 @@ class CitationController extends Controller
             $data['status'] = $status;
 
         }catch(Exception|ValidationException $e){
-            $data['error'] = $e->getMessage();
+            $data['errors'] = $e->getMessage();
             $http_code=400;
         }
 

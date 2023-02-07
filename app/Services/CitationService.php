@@ -13,7 +13,7 @@ class CitationService
             ->paginate($per_page);
     }
 
-    public static function index_api(int $per_page, int $page): array
+    public static function index_api(int $page,  int $per_page ): array
     {
         $result = Citation::orderBy('id','desc')
             ->offset(($page-1)*$per_page)

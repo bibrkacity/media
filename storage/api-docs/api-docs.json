@@ -138,6 +138,44 @@
                         "bearerAuth": []
                     }
                 ]
+            },
+            "put": {
+                "tags": [
+                    "Citations"
+                ],
+                "summary": "Update citation",
+                "description": "Update citation",
+                "operationId": "f55b37404d7abc0e950c93bfc6a9f039",
+                "parameters": [
+                    {
+                        "name": "citation_id",
+                        "in": "query",
+                        "description": "Id of citation in table `citations`",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "citation",
+                        "in": "query",
+                        "description": "Text of citation",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The list of citations"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },

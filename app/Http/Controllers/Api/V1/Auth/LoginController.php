@@ -67,13 +67,13 @@ class LoginController extends ApiController
                 $result= ['token' => $token->plainTextToken];
             }
             else{
-                $result= ['error' => 'Invalid login or password'];
+                $result= ['errors' => 'Invalid login or password'];
             }
         } catch(ValidationException $e){
-            $result= ['error' => $e->getMessage()];
+            $result= ['errors' => $e->getMessage()];
             $http_code = 423;
         } catch(\Exception $e){
-            $result= ['error' => $e->getMessage()];
+            $result= ['errors' => $e->getMessage()];
             $http_code = 400;
         }
 

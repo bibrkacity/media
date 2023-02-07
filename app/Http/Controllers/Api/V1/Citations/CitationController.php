@@ -49,140 +49,126 @@ class CitationController extends ApiController
      *     )
      * )
      */
-    public function index()
-    {
-        return 'List';
-        try{
-
-            $data=['error' => ''];
-            $paginator = CitationService::index_api($perPage);
-            $data['citations'] = $paginator->items();
-            $data['messengers'] = CitationService::messengers();
-
-        }
-        catch(\Exception $e){
-            \Log::info( $e->getMessage() . "\nfile " . $e->getFile() . "\nline ".$e->getLine() );
-            $data['error'] = 'Unexpected error: '.$e->getMessage();
-        }
-
-        return view('citations.index', ['data'=>$data]);
-    }
-
-    public function edit(string $id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
-    {
-        $citation_id = (int)$id;
-
-        $citation = Citation::find($citation_id);
-
-        $data = [
-            'id' => $citation_id,
-            'citation' => $citation->citation
-        ];
-
-        return view('citations.edit',['data' => $data]);
-    }
-
-    public function update(string $id, Request $request): \Illuminate\Http\RedirectResponse
+    public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         try{
+            $http_code = 200;
             $rules = [
-                'citation'=>'required|string|max:500',
+                'page' => 'integer:min:1',
+                'per_page' => 'integer|min:1',
+            ];
+
+            $validator = Validator::make($request->all(), $rules );
+            if($validator->fails())            {
+                throw new ValidationException($validator);
+            }
+
+            $page = isset($request->page) ? (int)$request->page : 1;
+            $per_page = isset($request->per_page) ? (int)$request->per_page : 25;
+
+            $data = [];
+            $data['citations'] = CitationService::index_api($page, $per_page);
+
+        } catch(ValidationException $e){
+            $data= ['errors' => $e->getMessage()];
+            $http_code = 423;
+        } catch(\Exception $e){
+            $data= ['errors' => $e->getMessage()];
+            $http_code = 400;
+        }
+
+        return response()->json($data,$http_code);
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/citations",
+     *     summary="Update citation",
+     *     description="Update citation",
+     *     tags={"Citations"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *          name="citation_id",
+     *          description="Id of citation in table `citations`",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer",
+     *          )
+     *      ),
+     *     @OA\Parameter(
+     *          name="citation",
+     *          description="Text of citation",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="The list of citations",
+     *     )
+     * )
+     */
+    public function update(Request $request): \Illuminate\Http\JsonResponse
+    {
+        try{
+            $http_code = 200;
+            $rules = [
+                'citation_id'   => 'required|integer|exists:citations,id',
+                'citation'      => 'required|string|max:500',
             ];
             $validator = Validator::make($request->all() , $rules);
 
             if( $validator->fails() )
-                return response()->redirectTo( route('citations.create') )
-                    ->withErrors($validator);
+                throw new ValidationException($validator);
 
-            $citation_id = (int)$id;
+            $citation_id = (int)$request->citation_id;
 
             $citation = Citation::find($citation_id);
             $citation->citation = $request->citation;
             $citation->save();
-
-            return response()->redirectTo( route( 'citations.edit',['id'=>$citation->id] ) );
-
-        } catch(QueryException $e){
-            return response()->redirectTo( route('citations.edit',['id'=>$citation_id]) )
-                ->withErrors('Changes are not saved: perhaps non-unique text');
+            $data = [];
+        } catch(ValidationException $e){
+            $data= ['errors' => $e->getMessage()];
+            $http_code = 423;
         } catch(\Exception $e){
-            return response()->redirectTo( route('citations.edit',['id'=>$citation_id]) )
-                ->withErrors(get_class($e).' '.$e->getMessage());
+            $data= ['errors' => $e->getMessage()];
+            $http_code = 400;
         }
+        return response()->json($data,$http_code);
     }
 
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         try{
+            $http_code = 200;
             $rules = [
                 'citation'=>'required|string|max:500|unique:App\Models\Citation,citation',
             ];
             $validator = Validator::make($request->all() , $rules);
 
             if( $validator->fails() )
-                return response()->redirectTo( route('citations.create') )
-                    ->withErrors($validator);
+                throw new ValidationException($validator);
 
             $citation = Citation::create([
                 'user_id'   =>  Auth::id(),
                 'citation'  => $request->citation,
             ]);
-            return response()->redirectTo( route( 'citations.edit',['id'=>$citation->id] ) );
-
-        } catch(\Exception $e){
-            return response()->redirectTo( route('citations.create') )
-                ->withErrors($e->getMessage());
-        }
-    }
-
-    public  function send(Request $request): \Illuminate\Http\JsonResponse
-    {
-        try{
-
             $data = [
-                'status'=>MessengerBase::SENT
+                'citation' => $citation
             ];
 
-            $http_code = 200;
 
-            $input = $request->all();
-
-            $rules = [
-                'citation_id' => 'required|integer|min:1',
-                'messenger_name' => 'required|string',
-            ];
-            $validator = Validator::make($input , $rules);
-            if( $validator->fails() )
-                throw new ValidationException($validator);
-
-            $messenger = MessengerBase::createInstance($request->messenger_name);
-
-            $rules = $messenger->rules();
-            $validator = Validator::make($input , $rules);
-            if( $validator->fails() )
-                throw new ValidationException($validator);
-
-            $citation = Citation::find($input['citation_id']);
-
-            $address_name = $messenger->address_field_name;
-            $address = $input[$address_name];
-
-            $status = $messenger->send($address, $citation->citation );
-
-            $citation->Messengers()->attach($messenger->id,[
-                    'user_id'=>Auth::id(),
-                    'address'=>$address,
-                    'status'=>$status,
-                ]);
-
-            $data['status'] = $status;
-
-        }catch(Exception|ValidationException $e){
-            $data['error'] = $e->getMessage();
-            $http_code=400;
+        } catch(ValidationException $e){
+            $data= ['errors' => $e->getMessage()];
+            $http_code = 423;
+        } catch(\Exception $e){
+            $data= ['errors' => $e->getMessage()];
+            $http_code = 400;
         }
-
-        return response()->json($data, $http_code);
+        return response()->json($data,$http_code);
     }
 
 }
