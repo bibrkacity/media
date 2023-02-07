@@ -135,7 +135,7 @@
                 },
                 "security": [
                     {
-                        "token": []
+                        "bearerAuth": []
                     }
                 ]
             }
@@ -143,10 +143,11 @@
     },
     "components": {
         "securitySchemes": {
-            "token": {
-                "type": "apiKey",
-                "name": "Authorization",
-                "in": "header"
+            "bearerAuth": {
+                "type": "http",
+                "name": "Bearer authorization",
+                "in": "header",
+                "scheme": "bearer"
             }
         }
     }

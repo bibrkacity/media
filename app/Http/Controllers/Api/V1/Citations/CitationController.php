@@ -22,7 +22,7 @@ class CitationController extends ApiController
      *     summary="List of citations",
      *     description="List of citations",
      *     tags={"Citations"},
-     *     security={{"token": {}}},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *          name="page",
      *          description="Page number",
@@ -51,6 +51,7 @@ class CitationController extends ApiController
      */
     public function index()
     {
+        return 'List';
         try{
 
             $data=['error' => ''];

@@ -8,9 +8,10 @@ use Throwable;
 /**
  * @OA\Info(title="Citations API", version="1")
  * @OA\SecurityScheme(
- *   securityScheme="token",
- *   type="apiKey",
- *   name="Authorization",
+ *   securityScheme="bearerAuth",
+ *   type="http",
+ *   name="Bearer authorization",
+ *   scheme="bearer",
  *   in="header"
  * )
  * @OA\Server(
