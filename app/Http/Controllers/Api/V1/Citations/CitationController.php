@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Citations;
 
 use App\Http\Controllers\Api\V1\ApiController;
 use App\Models\Citation;
+use App\Models\Messenger;
 use App\Services\CitationService;
 use App\Services\MessengerBase;
 use Exception;
@@ -192,6 +193,71 @@ class CitationController extends ApiController
             $http_code = 400;
         }
         return response()->json($data,$http_code);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/citations/send",
+     *     summary="Send citation by messenger",
+     *     description="Send citation by messenger",
+     *     tags={"Citations"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *          name="citation_id",
+     *          description="Id of citation",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer",
+     *          )
+     *      ),
+     *     @OA\Parameter(
+     *          name="messenger_name",
+     *          description="Name of messenger (field `messengers`.`name`)",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     *     @OA\Parameter(
+     *          name="specific field(s) of messenger",
+     *          description="specific field(s) of messenger",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Status of sending",
+     *     )
+     * )
+     */
+    public function send(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $ctrl = new \App\Http\Controllers\Citations\CitationController();
+        return $ctrl->send();
+    }
+
+
+    /**
+     * @OA\Get(
+     *     path="/citations/messengers",
+     *     summary="Messengers list",
+     *     description="Messengers list",
+     *     tags={"Citations"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Array of messenders",
+     *     )
+     * )
+     */
+    public function messengers(): \Illuminate\Http\JsonResponse
+    {
+        return response()->json(Messenger::all(),200);
     }
 
 }

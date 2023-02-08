@@ -37,3 +37,8 @@
 ## API
 
 Please read [http://127.0.0.1:8000/api/documentation](http://127.0.0.1:8000/api/documentation)
+
+## Console
+
+Type **php artisan make:citation**  in console for add a citation. Command will ask the text of citation and id of user-creator. 
+You will get info about result od adding 

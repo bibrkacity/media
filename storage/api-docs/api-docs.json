@@ -206,6 +206,75 @@
                     }
                 ]
             }
+        },
+        "/citations/send": {
+            "post": {
+                "tags": [
+                    "Citations"
+                ],
+                "summary": "Send citation by messenger",
+                "description": "Send citation by messenger",
+                "operationId": "acb2d1ff66cd60b75936f8ee2bc56df8",
+                "parameters": [
+                    {
+                        "name": "citation_id",
+                        "in": "query",
+                        "description": "Id of citation",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "messenger_name",
+                        "in": "query",
+                        "description": "Name of messenger (field `messengers`.`name`)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "specific field(s) of messenger",
+                        "in": "query",
+                        "description": "specific field(s) of messenger",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status of sending"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/citations/messengers": {
+            "get": {
+                "tags": [
+                    "Citations"
+                ],
+                "summary": "Messengers list",
+                "description": "Messengers list",
+                "operationId": "c73749bcebe022ad198b6b856fcde23d",
+                "responses": {
+                    "200": {
+                        "description": "Array of messenders"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {

@@ -30,7 +30,8 @@ Route::group(['prefix' => 'v1','namespace'=>'\App\Http\Controllers\Api\V1'], fun
             $api->get('/' , 'Citations\CitationController@index')->name('api.citations.index');
             $api->post('/', 'Citations\CitationController@store')->name('api.citations.store');
             $api->put('/' , 'Citations\CitationController@update')->name('api.citations.update');
-
+            $api->post('/send', 'Citations\CitationController@send')->name('api.citations.send');
+            $api->get('/messengers' , 'Citations\CitationController@messengers')->name('api.citations.messengers');
         });
 
     });
